@@ -21,7 +21,7 @@ public class LoginService {
     UserInfoRepository userRepo;
     BalanceRepository balanceRepo;
 
-    public boolean register(NewUserRequest newUserRequest){
+    public boolean validateNewUser(NewUserRequest newUserRequest){
         return isEmail(newUserRequest.getEmail()) ||
                 validatePasswordLength(newUserRequest.getPassword()) ||
                 validateCapital(newUserRequest.getPassword()) ||
