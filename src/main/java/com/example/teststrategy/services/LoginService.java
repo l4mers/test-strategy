@@ -41,7 +41,7 @@ public class LoginService {
         return true;
     }
 
-    public boolean validateNameLength(String password){
+    public boolean validateNameLength(String name){
         return true;
     }
 
