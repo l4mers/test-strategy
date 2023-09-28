@@ -27,6 +27,7 @@ class LoginServiceUnitTests {
     @Test
     void testIfNameIsWrittenCorrectly() {
         assertTrue(validator.validateNameLength("Märta"));
+        assertFalse(validator.validateNameLength("hejehjehjhjehrjhjhejkahejaotberbgskrntksjrnsysrsrlnls"));
         assertFalse(validator.validateNameLength(" "));
         assertFalse(validator.validateNameLength("M"));
         assertFalse(validator.validateNameLength(null));
