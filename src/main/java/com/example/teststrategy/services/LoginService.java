@@ -62,7 +62,11 @@ public class LoginService {
     }
 
     public boolean authenticate(LoginRequest loginRequest){
-
+        Login login = loginRepo.findByEmail(loginRequest.getEmail());
+        if(login != null){
+            return passwordEncoder.matches(loginRequest.getPassword(), loginRequest.getPassword());
+        }
+        return false;
     }
 
     public UserInfo register(NewUserRequest newUserRequest) {
@@ -83,5 +87,9 @@ public class LoginService {
                 .build());
 
         return userInfo;
+    }
+
+    public UserInfo login(String email) {
+        return userRepo.findUserInfoByLoginId(loginRepo.findByEmail(email).getId());
     }
 }
