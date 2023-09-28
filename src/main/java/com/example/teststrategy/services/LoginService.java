@@ -27,7 +27,8 @@ public class LoginService {
                 validateCapital(newUserRequest.getPassword()) ||
                 validateSymbol(newUserRequest.getPassword()) ||
                 validateNameLength(newUserRequest.getName()) ||
-                validateAge(newUserRequest.getAge());
+                validateAge(newUserRequest.getAge()) ||
+                emailExist(newUserRequest.getEmail());
     }
 
     public boolean isEmail(String email){
@@ -52,6 +53,10 @@ public class LoginService {
 
     public boolean validateAge(int age){
         return true;
+    }
+
+    public boolean emailExist(String email){
+        return loginRepo.existsByEmail(email);
     }
 
     public boolean authenticate(LoginRequest loginRequest){
