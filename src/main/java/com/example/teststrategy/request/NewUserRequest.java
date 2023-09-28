@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class NewUserRequest {
-    String emil;
+    String email;
     String password;
     String name;
     int age;

@@ -6,6 +6,8 @@ import com.example.teststrategy.repositories.BalanceRepository;
 import com.example.teststrategy.repositories.LoginRepository;
 import com.example.teststrategy.repositories.UserInfoRepository;
 import com.example.teststrategy.request.LoginRequest;
+import com.example.teststrategy.request.NewUserRequest;
+import com.example.teststrategy.services.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ public class Controller {
     LoginRepository loginRepo;
     UserInfoRepository userRepo;
     BalanceRepository balanceRepo;
+    LoginService loginService;
 
     @PostMapping("/login")
     public ResponseEntity<UserInfo> getUser(@RequestBody LoginRequest loginRequest) {
@@ -30,5 +33,12 @@ public class Controller {
     public ResponseEntity<Integer> getBalance(@PathVariable int id) {
         Balance balance = balanceRepo.findByUserinfoId(id);
         return new ResponseEntity<>(balance.getBalance(), HttpStatus.OK);
+    }
+
+    @PostMapping("/createaccount")
+    public ResponseEntity<UserInfo> createNewUser (@RequestBody NewUserRequest newUserRequest) {
+        if (loginService.register(newUserRequest)) {
+            userRepo.save()
+        }
     }
 }

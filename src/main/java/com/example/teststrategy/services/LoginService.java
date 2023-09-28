@@ -21,12 +21,13 @@ public class LoginService {
     BalanceRepository balanceRepo;
 
     public boolean register(NewUserRequest newUserRequest){
-        if (isEmail(newUserRequest.getEmil()) ||
+        if (isEmail(newUserRequest.getEmail()) ||
                 validatePasswordLength(newUserRequest.getPassword()) ||
                 validateCapital(newUserRequest.getPassword()) ||
                 validateSymbol(newUserRequest.getPassword()) ||
                 validateNameLength(newUserRequest.getName()) ||
-                validateAge(newUserRequest.getAge())){
+                validateAge(newUserRequest.getAge()) ||
+        emailExists(newUserRequest.getEmail())){
             return true;
         }
     }
@@ -58,4 +59,6 @@ public class LoginService {
     public boolean authenticate(LoginRequest loginRequest){
 
     }
+
+    public boolean emailExists(String email) {return loginRepo.existsByEmail(email);}
 }

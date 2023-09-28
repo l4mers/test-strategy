@@ -16,6 +16,6 @@ public class Login {
     @Id
     int id;
     int loginId;
-    String emil;
+    String email;
     String password;
 }
