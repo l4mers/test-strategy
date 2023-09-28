@@ -17,5 +17,4 @@ public class UserInfo {
     int id;
     String name;
     int age;
-    int balanceId;
 }

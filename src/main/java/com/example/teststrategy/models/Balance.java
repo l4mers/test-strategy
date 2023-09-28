@@ -16,4 +16,5 @@ public class Balance {
     @Id
     int id;
     int balance;
+    int userinfoId;
 }
