@@ -1,5 +1,6 @@
 package com.example.teststrategy.services;
 
+import com.example.teststrategy.models.Balance;
 import com.example.teststrategy.repositories.BalanceRepository;
 import com.example.teststrategy.repositories.LoginRepository;
 import com.example.teststrategy.repositories.UserInfoRepository;
@@ -21,15 +22,12 @@ public class LoginService {
     BalanceRepository balanceRepo;
 
     public boolean register(NewUserRequest newUserRequest){
-        if (isEmail(newUserRequest.getEmail()) ||
+        return isEmail(newUserRequest.getEmail()) ||
                 validatePasswordLength(newUserRequest.getPassword()) ||
                 validateCapital(newUserRequest.getPassword()) ||
                 validateSymbol(newUserRequest.getPassword()) ||
                 validateNameLength(newUserRequest.getName()) ||
-                validateAge(newUserRequest.getAge()) ||
-        emailExists(newUserRequest.getEmail())){
-            return true;
-        }
+                validateAge(newUserRequest.getAge());
     }
 
     public boolean isEmail(String email){
@@ -59,6 +57,4 @@ public class LoginService {
     public boolean authenticate(LoginRequest loginRequest){
 
     }
-
-    public boolean emailExists(String email) {return loginRepo.existsByEmail(email);}
 }
