@@ -47,9 +47,11 @@ class LoginServiceUnitTests {
     }
 
     @Test
-    void testsThatAgeIsWrittenCorrectly() {
+    void testsThatAgeIsNotUnderageOrImpossible() {
         assertTrue(validator.validateAge(90));
         assertFalse(validator.validateAge(-200));
+        assertFalse(validator.validateAge(134));
+        assertFalse(validator.validateAge(16));
     }
 
 }

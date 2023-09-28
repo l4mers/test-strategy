@@ -34,26 +34,42 @@ public class LoginService {
     }
 
     public boolean isEmail(String email){
-        return true;
+        if (email == null) {
+            return false;
+        }
+
+        String emailRegexPattern = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+        return email.matches(emailRegexPattern);
     }
 
+
     public boolean validatePasswordLength(String password){
+        if (password == null || password.length() <5 || password.length() >30) {
+            return false;
+        }
         return true;
     }
 
     public boolean validateNameLength(String name){
+        if (name == null || name.length() <2 || name.length() >20) {
+            return false;
+        }
         return true;
     }
 
     public boolean validateCapital(String password){
-        return true;
+        return password != null && password.matches(".*[A-Z].*");
     }
 
     public boolean validateSymbol(String password){
-        return true;
+        return password != null && password.matches(".*[!@#$%^&*()\\[\\]{};:'\"<>,.?/~`_-].*");
     }
 
     public boolean validateAge(int age){
+        if (age < 18 || age > 120) {
+            return false;
+        }
         return true;
     }
 
