@@ -1,6 +1,7 @@
 package com.example.teststrategy.controllers;
 
 import com.example.teststrategy.models.Balance;
+import com.example.teststrategy.models.Login;
 import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.repositories.BalanceRepository;
 import com.example.teststrategy.repositories.LoginRepository;
@@ -37,8 +38,9 @@ public class Controller {
 
     @PostMapping("/createaccount")
     public ResponseEntity<UserInfo> createNewUser (@RequestBody NewUserRequest newUserRequest) {
-        if (loginService.register(newUserRequest)) {
-            userRepo.save()
+        if (loginService.validateNewUser(newUserRequest)) {
+            return new ResponseEntity<>(loginService.register(newUserRequest), HttpStatus.OK);
         }
+        return new ResponseEntity<>(new UserInfo(), HttpStatus.BAD_REQUEST);
     }
 }

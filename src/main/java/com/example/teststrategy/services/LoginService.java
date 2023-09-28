@@ -1,6 +1,8 @@
 package com.example.teststrategy.services;
 
 import com.example.teststrategy.models.Balance;
+import com.example.teststrategy.models.Login;
+import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.repositories.BalanceRepository;
 import com.example.teststrategy.repositories.LoginRepository;
 import com.example.teststrategy.repositories.UserInfoRepository;
@@ -56,10 +58,30 @@ public class LoginService {
     }
 
     public boolean emailExist(String email){
-        return loginRepo.existsByEmail(email);
+        return !loginRepo.existsByEmail(email);
     }
 
     public boolean authenticate(LoginRequest loginRequest){
 
+    }
+
+    public UserInfo register(NewUserRequest newUserRequest) {
+        Login login = loginRepo.save(Login.builder()
+                .email(newUserRequest.getEmail())
+                .password(passwordEncoder.encode(newUserRequest.getPassword()))
+                .build());
+
+        UserInfo userInfo = userRepo.save(UserInfo.builder()
+                .name(newUserRequest.getName())
+                .age(newUserRequest.getAge())
+                .loginId(login.getId())
+                .build());
+
+        balanceRepo.save(Balance.builder()
+                .balance(0)
+                .userinfoId(userInfo.getId())
+                .build());
+
+        return userInfo;
     }
 }
