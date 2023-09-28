@@ -16,8 +16,9 @@ class LoginServiceUnitTests {
     }
 
     @Test
-    void testsThatPasswordIsNotTooShort(){
+    void testsThatPasswordIsNotTooShortOrTooLong(){
         assertTrue(validator.validatePasswordLength("Plånboken2"));
+        assertFalse(validator.validatePasswordLength("hejhejehjehjehejehehjeehejehjejhhejhejhejhejehjehjehjhhejhhjehejehejeh"));
         assertFalse(validator.validatePasswordLength(" "));
         assertFalse(validator.validatePasswordLength("i"));
         assertFalse(validator.validatePasswordLength(null));
