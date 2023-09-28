@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class LoginRequest {
+public class NewUserRequest {
     String emil;
     String password;
+    String name;
+    int age;
 }
