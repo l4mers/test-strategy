@@ -14,15 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpHeaders;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class Controller {
-    UserInfoRepository userRepo;
-    BalanceRepository balanceRepo;
-    LoginService loginService;
+    private final UserInfoRepository userRepo;
+    final private BalanceRepository balanceRepo;
+    private final LoginService loginService;
 
     @PostMapping("/login")
     public ResponseEntity<UserInfo> getUser(@RequestBody LoginRequest loginRequest) {
