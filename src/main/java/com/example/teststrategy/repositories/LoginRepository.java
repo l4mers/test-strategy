@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LoginRepository extends JpaRepository<Login, Integer> {
     Boolean existsByEmail(String email);
-
     Login findByEmail(String email);
 }

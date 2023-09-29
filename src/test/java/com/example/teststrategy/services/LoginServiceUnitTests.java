@@ -1,13 +1,27 @@
 package com.example.teststrategy.services;
 
-import com.example.teststrategy.models.UserInfo;
+import com.example.teststrategy.repositories.BalanceRepository;
+import com.example.teststrategy.repositories.LoginRepository;
+import com.example.teststrategy.repositories.UserInfoRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
 class LoginServiceUnitTests {
-
-    LoginService validator = new LoginService();
+    @MockBean
+    private LoginRepository loginRepository;
+    @MockBean
+    private UserInfoRepository userInfoRepository;
+    @MockBean
+    private BalanceRepository balanceRepository;
+    LoginService validator;
+    @BeforeEach
+    void setUp() {
+        validator = new LoginService(loginRepository, userInfoRepository, balanceRepository);
+    }
 
     @Test
     void testThatEmailIsWrittenCorrect() {

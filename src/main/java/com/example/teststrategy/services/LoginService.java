@@ -8,6 +8,7 @@ import com.example.teststrategy.repositories.LoginRepository;
 import com.example.teststrategy.repositories.UserInfoRepository;
 import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,17 +20,17 @@ public class LoginService {
 
     final private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    LoginRepository loginRepo;
-    UserInfoRepository userRepo;
-    BalanceRepository balanceRepo;
+    final private LoginRepository loginRepo;
+    final private UserInfoRepository userRepo;
+    final private BalanceRepository balanceRepo;
 
     public boolean validateNewUser(NewUserRequest newUserRequest){
-        return isEmail(newUserRequest.getEmail()) ||
-                validatePasswordLength(newUserRequest.getPassword()) ||
-                validateCapital(newUserRequest.getPassword()) ||
-                validateSymbol(newUserRequest.getPassword()) ||
-                validateNameLength(newUserRequest.getName()) ||
-                validateAge(newUserRequest.getAge()) ||
+        return isEmail(newUserRequest.getEmail()) &&
+                validatePasswordLength(newUserRequest.getPassword()) &&
+                validateCapital(newUserRequest.getPassword()) &&
+                validateSymbol(newUserRequest.getPassword()) &&
+                validateNameLength(newUserRequest.getName()) &&
+                validateAge(newUserRequest.getAge()) &&
                 emailExist(newUserRequest.getEmail());
     }
 
@@ -45,17 +46,11 @@ public class LoginService {
 
 
     public boolean validatePasswordLength(String password){
-        if (password == null || password.length() <5 || password.length() >30) {
-            return false;
-        }
-        return true;
+        return password != null && password.length() >= 5 && password.length() <= 30;
     }
 
     public boolean validateNameLength(String name){
-        if (name == null || name.length() <2 || name.length() >20) {
-            return false;
-        }
-        return true;
+        return name != null && name.length() >= 2 && name.length() <= 20;
     }
 
     public boolean validateCapital(String password){
@@ -67,10 +62,7 @@ public class LoginService {
     }
 
     public boolean validateAge(int age){
-        if (age < 18 || age > 120) {
-            return false;
-        }
-        return true;
+        return age >= 18 && age <= 120;
     }
 
     public boolean emailExist(String email){
