@@ -1,10 +1,8 @@
 package com.example.teststrategy.controllers;
 
 import com.example.teststrategy.models.Balance;
-import com.example.teststrategy.models.Login;
 import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.repositories.BalanceRepository;
-import com.example.teststrategy.repositories.LoginRepository;
 import com.example.teststrategy.repositories.UserInfoRepository;
 import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
@@ -13,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController

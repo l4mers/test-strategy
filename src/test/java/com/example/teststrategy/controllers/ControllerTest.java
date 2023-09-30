@@ -2,6 +2,7 @@ package com.example.teststrategy.controllers;
 
 import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.request.NewUserRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,37 @@ class ControllerTest {
     }
 
     @Test
-    void getBalance() {
+    void loginUser_ValidRequest_ShouldReturnOK() throws Exception {
+        NewUserRequest newUserRequest = new NewUserRequest("hanna@solo.com", "mIttpw!12", "hanna", 25);
+
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                newUserRequest
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo(2,"hanna",25, 2)
+                        )
+                ));
+    }
+
+    @Test
+    void setBalance_ValidRequest_ShouldReturnOK() throws Exception {
+        NewUserRequest newUserRequest = new NewUserRequest("hanna@solo.com", "mIttpw!12", "hanna", 25);
+
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                newUserRequest
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo(2,"hanna",25, 2)
+                        )
+                ));
     }
 
     @Test
