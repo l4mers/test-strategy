@@ -68,9 +68,7 @@ public class ValidateAndResourceService {
                 .password(passwordEncoder.encode(newUserRequest.getPassword()))
                 .build());
 
-        UserInfo userInfo =
-
-                userRepo.save(UserInfo.builder()
+        UserInfo userInfo = userRepo.save(UserInfo.builder()
                 .name(newUserRequest.getName())
                 .age(newUserRequest.getAge())
                 .loginId(login.getId())
