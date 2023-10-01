@@ -92,7 +92,7 @@ public class ValidateAndResourceService {
     }
 
     public boolean balanceExistByUserId(int id) {
-        return balanceRepo.existByUserinfoId(id);
+        return balanceRepo.existsBalanceByUserinfoId(id);
     }
 
     public Balance updateBalance(int userId, int value) {

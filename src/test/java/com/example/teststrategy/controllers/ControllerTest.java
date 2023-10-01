@@ -4,6 +4,7 @@ import com.example.teststrategy.models.Balance;
 import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
+import com.example.teststrategy.request.SetBalanceRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,8 +152,11 @@ class ControllerTest {
 
     @Test
     void setBalance_ValidRequest_ShouldReturnOK() throws Exception {
-        this.mockMvc.perform(put("/api/update-balance?userId=1&balance=100")
-                        .contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/update-balance")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new SetBalanceRequest(1,100)
+                        )))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
@@ -163,8 +167,11 @@ class ControllerTest {
 
     @Test
     void setBalance_InvalidBalance_ShouldReturnBAD() throws Exception {
-        this.mockMvc.perform(put("/api/update-balance?userId=1&balance=-100")
-                        .contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/api/update-balance")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new SetBalanceRequest(1,-100)
+                        )))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
