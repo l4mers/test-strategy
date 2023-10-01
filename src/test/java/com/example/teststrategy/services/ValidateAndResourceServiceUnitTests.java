@@ -10,17 +10,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
-class LoginServiceUnitTests {
+class ValidateAndResourceServiceUnitTests {
     @MockBean
     private LoginRepository loginRepository;
     @MockBean
     private UserInfoRepository userInfoRepository;
     @MockBean
     private BalanceRepository balanceRepository;
-    LoginService validator;
+    ValidateAndResourceService validator;
     @BeforeEach
     void setUp() {
-        validator = new LoginService(loginRepository, userInfoRepository, balanceRepository);
+        validator = new ValidateAndResourceService(loginRepository, userInfoRepository, balanceRepository);
     }
 
     @Test

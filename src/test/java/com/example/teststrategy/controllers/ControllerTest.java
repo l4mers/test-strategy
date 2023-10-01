@@ -1,8 +1,9 @@
 package com.example.teststrategy.controllers;
 
+import com.example.teststrategy.models.Balance;
 import com.example.teststrategy.models.UserInfo;
+import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -28,12 +25,11 @@ class ControllerTest {
 
     @Test
     void createNewUser_ValidRequest_ShouldReturnOK() throws Exception {
-        NewUserRequest newUserRequest = new NewUserRequest("han@solo.com", "mIttpw!12", "han", 25);
-
         this.mockMvc.perform(post("/api/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(
-                                newUserRequest
+                                new NewUserRequest("han@solo.com", "mIttpw!12", "han", 25)
+
                         )))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
@@ -43,13 +39,76 @@ class ControllerTest {
                 ));
     }
     @Test
-    void createNewUser_InvalidRequest_ShouldReturnBAD() throws Exception {
-        NewUserRequest newUserRequest = new NewUserRequest("asd", "123", "han", -25);
-
+    void createNewUser_EmailAlreadyExist_ShouldReturnBAD() throws Exception {
         this.mockMvc.perform(post("/api/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(
-                                newUserRequest
+                                new NewUserRequest("han@solo.com", "mIttpw!12", "han", 25)
+
+                        )))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo()
+                        )
+                ));
+    }
+
+    @Test
+    void createNewUser_InvalidPassword_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new NewUserRequest("hanna@solo.com", "asd", "hanna", 25)
+
+                        )))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo()
+                        )
+                ));
+    }
+
+    @Test
+    void createNewUser_InvalidEmail_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new NewUserRequest("asd", "mIttpw!12", "hanna", 25)
+
+                        )))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo()
+                        )
+                ));
+    }
+
+    @Test
+    void createNewUser_InvalidName_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new NewUserRequest("hanna@solo.com", "mIttpw!12", "b", 25)
+
+                        )))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo()
+                        )
+                ));
+    }
+
+    @Test
+    void createNewUser_InvalidAge_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new NewUserRequest("hanna@solo.com", "mIttpw!12", "bostrom", -25)
+
                         )))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(
@@ -61,43 +120,68 @@ class ControllerTest {
 
     @Test
     void loginUser_ValidRequest_ShouldReturnOK() throws Exception {
-        NewUserRequest newUserRequest = new NewUserRequest("hanna@solo.com", "mIttpw!12", "hanna", 25);
-
-        this.mockMvc.perform(post("/api/create")
+        this.mockMvc.perform(post("/api/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(
-                                newUserRequest
+                                new LoginRequest("han@solo.com", "mIttpw!12")
                         )))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
-                                new UserInfo(2,"hanna",25, 2)
+                                new UserInfo(1,"han",25, 1)
+                        )
+                ));
+    }
+
+    @Test
+    void loginUser_InvalidPassword_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(post("/api/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new LoginRequest("han@solo.com", "wrongPassword!")
+
+                        )))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo()
                         )
                 ));
     }
 
     @Test
     void setBalance_ValidRequest_ShouldReturnOK() throws Exception {
-        NewUserRequest newUserRequest = new NewUserRequest("hanna@solo.com", "mIttpw!12", "hanna", 25);
-
-        this.mockMvc.perform(post("/api/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(
-                                newUserRequest
-                        )))
+        this.mockMvc.perform(put("/api/update-balance?userId=1&balance=100")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
-                                new UserInfo(2,"hanna",25, 2)
+                                new Balance(1, 100, 1)
                         )
                 ));
     }
 
     @Test
-    void createNewUser() {
+    void setBalance_InvalidBalance_ShouldReturnBAD() throws Exception {
+        this.mockMvc.perform(put("/api/update-balance?userId=1&balance=-100")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new Balance()
+                        )
+                ));
     }
-
     @Test
-    void updateBalance() {
+    void getBalance_ValidRequest_ShouldReturnOK() throws Exception {
+        Integer balance = 100;
+        this.mockMvc.perform(get("/api/balance/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                balance
+                        )
+                ));
     }
 }
