@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,7 +24,6 @@ class ControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Test
     void createNewUser_ValidRequest_ShouldReturnOK() throws Exception {
         this.mockMvc.perform(post("/api/create")
@@ -35,7 +35,7 @@ class ControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
-                                new UserInfo(1,"han",25, 1)
+                                new UserInfo(2,"han",25, 2)
                         )
                 ));
     }
@@ -129,7 +129,7 @@ class ControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                         new ObjectMapper().writeValueAsString(
-                                new UserInfo(1,"han",25, 1)
+                                new UserInfo(2,"han",25, 2)
                         )
                 ));
     }
@@ -152,6 +152,21 @@ class ControllerTest {
 
     @Test
     void setBalance_ValidRequest_ShouldReturnOK() throws Exception {
+
+        this.mockMvc.perform(post("/api/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                new NewUserRequest("hanna@solo.com", "mIttpw!12", "hanna", 25)
+
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                new UserInfo(1,"hanna",25, 1)
+                        )
+                ));
+
+
         this.mockMvc.perform(put("/api/update-balance")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(
