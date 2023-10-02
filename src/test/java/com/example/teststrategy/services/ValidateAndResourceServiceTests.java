@@ -66,22 +66,17 @@ public class ValidateAndResourceServiceTests {
     @Test
     public void testAuthenticateWithValidCredentials() {
 
-        // Given
         String email = "test@example.com";
-        String password = "password";
+        String password = "Password!123";
         LoginRequest loginRequest = new LoginRequest(email, password);
-        Login login = Login.builder().email(email).password(passwordEncoder.encode(password)).build();
+        Login login = Login.builder().email(email).password("$2a$10$S1rbsrCMAj738jKMpRXfYu9A5uvzgG0dejWA.jLqDar3qMqmcwyTO").build();
 
-        // Mock the behavior of the repositories and password encoder
         when(loginRepository.findByEmail(email)).thenReturn(login);
-        when(passwordEncoder.matches(password, login.getPassword())).thenReturn(true);
+        when(passwordEncoder.matches(loginRequest.getPassword(), login.getPassword())).thenReturn(true);
 
-        // When
         boolean isAuthenticated = validateAndResourceService.authenticate(loginRequest);
 
-        // Then
         assertTrue(isAuthenticated);
-        // Add more assertions based on your application logic and expectations for the authenticate metho
     }
 
     @Test
