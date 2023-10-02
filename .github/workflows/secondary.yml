@@ -15,13 +15,13 @@ env:
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
-  build-and-push-image:
+  build:
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
       packages: write
-      #
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -41,7 +41,12 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      - name: Upload test results
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: image-push
         uses: actions/upload-artifact@v2
         with:
           name: test-results
@@ -75,3 +80,10 @@ jobs:
             user/app:1.0.0 
             ${{ steps.meta.outputs.labels }}
 
+  echo-image-name:
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - name: Echo image name
+        run: echo "Docker image name:" ${{ steps.meta.outputs.tags }} #${{ github.ref }}
