@@ -2,6 +2,7 @@ name: Main
 
 on:
   workflow_dispatch:
+
   push:
     branches: [ "semi-main" ]
   pull_request:
@@ -54,3 +55,4 @@ jobs:
     steps:
       - name: Echo image name
         run: echo "Docker image name:" ${{ github.ref }}
+
