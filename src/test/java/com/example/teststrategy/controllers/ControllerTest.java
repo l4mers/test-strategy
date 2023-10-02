@@ -206,4 +206,17 @@ class ControllerTest {
                         )
                 ));
     }
+
+    @Test
+    void getBalance_InvalidRequest_ShouldReturnBAD() throws Exception {
+        Integer balance = 0;
+        this.mockMvc.perform(get("/api/balance/6")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(
+                        new ObjectMapper().writeValueAsString(
+                                balance
+                        )
+                ));
+    }
 }

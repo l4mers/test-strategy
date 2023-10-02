@@ -28,6 +28,10 @@ class ValidateAndResourceServiceUnitTests {
         assertTrue(validator.isEmail("hej@hej.se"));
         assertFalse(validator.isEmail("hejhej"));
     }
+    @Test
+    void testThatEmailIsNull() {
+        assertFalse(validator.isEmail(null));
+    }
 
     @Test
     void testsThatPasswordIsNotTooShortOrTooLong(){
