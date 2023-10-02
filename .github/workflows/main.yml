@@ -45,6 +45,7 @@ jobs:
           context: .
           push: true
           tags: ${{ github.ref }}
+          dockerfile: ./Dockerfile
 
   echo-image-name:
     runs-on: ubuntu-latest
