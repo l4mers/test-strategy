@@ -95,6 +95,12 @@ public class ValidateAndResourceServiceTests {
 
     @Test
     void validateNewUser() {
+        NewUserRequest newUserRequest = new NewUserRequest("hej@hej.se", "Tjo22!", "Örjan", 46);
+
+        assertEquals("hej@hej.se", newUserRequest.getEmail());
+        assertEquals("Tjo22!", newUserRequest.getPassword());
+        assertEquals("Örjan", newUserRequest.getName());
+        assertEquals(46, newUserRequest.getAge());
     }
 
 
@@ -123,6 +129,8 @@ public class ValidateAndResourceServiceTests {
         assertNotNull(returnedUserInfo);
         assertEquals(1, returnedUserInfo.getId());
         assertEquals("Karin", returnedUserInfo.getName());
+        assertEquals(7, returnedUserInfo.getLoginId());
+        assertEquals(67, returnedUserInfo.getAge());
     }
 
 
