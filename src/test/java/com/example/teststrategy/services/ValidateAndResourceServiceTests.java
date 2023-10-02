@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -28,19 +29,16 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class ValidateAndResourceServiceTests {
-
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private LoginRepository loginRepository;
-
     @Mock
     private BalanceRepository balanceRepository;
-
     @Mock
     private UserInfoRepository userInfoRepository;
     @InjectMocks
     private ValidateAndResourceService validateAndResourceService;
-
-
 
     @BeforeEach
     public void init() {
@@ -52,10 +50,6 @@ public class ValidateAndResourceServiceTests {
         Login login2 = new Login(3, "lönnfetsirap@hotmail.se", "Jagebra.");
         Balance balance2 = new Balance(3, 3, 2);
 
-        UserInfo user3 = new UserInfo(3, "Moe", 35, 10);
-        Login login3 = new Login(10, "idiot@idiot.se", "jo");
-        Balance balance3 = new Balance(4, 3, 3);
-
 
         when(loginRepository.findByEmail("riktigidiot@dumedu.se")).thenReturn(login1);
         when(loginRepository.findByEmail("lönnfetsirap@hotmail.se")).thenReturn(login2);
@@ -66,19 +60,28 @@ public class ValidateAndResourceServiceTests {
         when(balanceRepository.findByUserinfoId(2)).thenReturn(balance2);
         when(validateAndResourceService.updateBalance(2, 1500)).thenReturn(balance2);
         when(validateAndResourceService.balanceExistByUserId(1)).thenReturn(true);
-        when(loginRepository.save(login3)).thenReturn(login3);
-        when(userInfoRepository.save(user3)).thenReturn(user3);
-        when(balanceRepository.save(balance3)).thenReturn(balance3);
 
     }
 
     @Test
     public void testAuthenticateWithValidCredentials() {
 
-        LoginRequest loginRequest = new LoginRequest("riktigidiot@dumedu.se", "Smartass!");
-        boolean result = validateAndResourceService.authenticate(loginRequest);
+        // Given
+        String email = "test@example.com";
+        String password = "password";
+        LoginRequest loginRequest = new LoginRequest(email, password);
+        Login login = Login.builder().email(email).password(passwordEncoder.encode(password)).build();
 
-        assertTrue(result);
+        // Mock the behavior of the repositories and password encoder
+        when(loginRepository.findByEmail(email)).thenReturn(login);
+        when(passwordEncoder.matches(password, login.getPassword())).thenReturn(true);
+
+        // When
+        boolean isAuthenticated = validateAndResourceService.authenticate(loginRequest);
+
+        // Then
+        assertTrue(isAuthenticated);
+        // Add more assertions based on your application logic and expectations for the authenticate metho
     }
 
     @Test
@@ -95,25 +98,33 @@ public class ValidateAndResourceServiceTests {
     }
 
 
-  /*  @Test
+    @Test
     void register() {
-        int userId = 3;
-        int loginId= 10;
 
-        NewUserRequest newUserRequest = new NewUserRequest()
+        NewUserRequest newUserRequest = new NewUserRequest("test@example.com", "Password!123", "mjo", 25);
+
+        when(loginRepository.save(any(Login.class))).thenReturn(Login.builder().id(1).build());
+        when(userInfoRepository.save(any(UserInfo.class))).thenReturn(UserInfo.builder().id(3).build());
+        when(passwordEncoder.encode(newUserRequest.getPassword())).thenReturn("$2a$10$S1rbsrCMAj738jKMpRXfYu9A5uvzgG0dejWA.jLqDar3qMqmcwyTO");
+        when(balanceRepository.save(any(Balance.class))).thenReturn(Balance.builder().id(1).build());
+
+        UserInfo userInfo = validateAndResourceService.register(newUserRequest);
 
         assertNotNull(userInfo);
+        assertEquals(3, userInfo.getId());
+
     }
 
     @Test
     void login() {
-     int userId = 2;
 
-      assertEquals(validateAndResourceService.login("lönnfetsirap@hotmail.com").getId(), userId );
+        UserInfo returnedUserInfo = validateAndResourceService.login("riktigidiot@dumedu.se");
 
+        assertNotNull(returnedUserInfo);
+        assertEquals(1, returnedUserInfo.getId());
+        assertEquals("Karin", returnedUserInfo.getName());
     }
 
-   */
 
     @Test
     void balanceExistByUserId() {
