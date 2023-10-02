@@ -3,7 +3,7 @@ name: Java Gradle CI
 on:
   push:
     branches:
-      - main # Byt ut 'main' med din huvudgren om den har ett annat namn
+      - semi-main
 
 jobs:
   build:
