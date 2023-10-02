@@ -2,8 +2,10 @@ name: Java Gradle
 
 on:
   push:
-    branches:
-      - semi-main
+    branches: [ "semi-main" ]
+  pull_request:
+    branches: [ "semi-main" ]
+
 
 jobs:
   build:
