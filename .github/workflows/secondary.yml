@@ -79,6 +79,7 @@ jobs:
             user/app:latest
             user/app:1.0.0 
             ${{ steps.meta.outputs.labels }}
+          dockerfile: ./Dockerfile
 
   echo-image-name:
     runs-on: ubuntu-latest
