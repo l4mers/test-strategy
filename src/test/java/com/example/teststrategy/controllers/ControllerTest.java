@@ -219,4 +219,11 @@ class ControllerTest {
                         )
                 ));
     }
+    @Test
+    void sayHello() throws Exception {
+        this.mockMvc.perform(get("/api/hello")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Hello world!"));
+    }
 }
