@@ -2,17 +2,10 @@ name: secondary
 
 on:
   workflow_dispatch:
+  push:
   pull_request:
     branches:
       - '*'
-    #types:
-      #- opened
-      #- synchronize
-  push:
-    branches:
-      - '*'
-
-      
 
 env:
   REGISTRY: ghcr.io
@@ -105,5 +98,7 @@ jobs:
     needs: deploy
 
     steps:
-      - name: Echo image name
-        run: echo "Docker image name:" ${{ github.ref }}
+    - name: echo branch
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: extract_branch
