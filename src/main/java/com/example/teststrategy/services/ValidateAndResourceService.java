@@ -102,4 +102,16 @@ public class ValidateAndResourceService {
     public Integer getBalance(int id) {
         return balanceRepo.findByUserinfoId(id).getBalance();
     }
+
+    public String konflikt() {
+
+        String message;
+        int count = 0;
+        int value = 30;
+        count++;
+        count++;
+        value = count * value;
+        message = "count times value equals: " + value;
+        return message;
+    }
 }
