@@ -99,4 +99,4 @@ jobs:
 
     steps:
     - name: Echo image name
-      run: echo "Docker image name:" ${{ GITHUB_REF##*/ }}
+      run: echo "Docker image name:" ${{ github.ref }}
