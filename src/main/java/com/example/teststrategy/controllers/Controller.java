@@ -56,4 +56,15 @@ public class Controller {
     public ResponseEntity<String> hello(){
         return new ResponseEntity<>("Hello world!", HttpStatus.OK);
     }
+
+    @GetMapping("/konflikt")
+    public ResponseEntity<String> konflikt(){
+        String konflikt = """
+                Den här texten är original.
+                Men i en framtida PR med en annan branch
+                kommer denna text ändras och
+                en merge konflikt uppstå.
+                """;
+        return new ResponseEntity<>(konflikt, HttpStatus.OK);
+    }
 }
