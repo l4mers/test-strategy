@@ -51,4 +51,9 @@ public class Controller {
         }
         return new ResponseEntity<>(new Balance(), HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello(){
+        return new ResponseEntity<>("Hello world!", HttpStatus.OK);
+    }
 }
