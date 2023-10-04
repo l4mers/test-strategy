@@ -3,12 +3,16 @@ name: secondary
 on:
   workflow_dispatch:
   pull_request:
-    types:
-      - opened
-      - synchronize
+    branches:
+      - '*'
+    #types:
+      #- opened
+      #- synchronize
   push:
     branches:
       - '*'
+
+      
 
 env:
   REGISTRY: ghcr.io
