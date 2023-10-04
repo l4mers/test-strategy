@@ -59,11 +59,6 @@ public class Controller {
 
     @GetMapping("/konflikt")
     public ResponseEntity<String> konflikt(){
-        String konflikt = """
-                Den här texten är ändrad.
-                Den här texten är ändrad för att
-                skapa en konflikt och påvisa det i en PR.
-                """;
-        return new ResponseEntity<>(konflikt, HttpStatus.OK);
+        return new ResponseEntity<>(validateAndResourceService.konflikt(), HttpStatus.OK);
     }
 }
