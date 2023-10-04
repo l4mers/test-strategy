@@ -98,7 +98,5 @@ jobs:
     needs: deploy
 
     steps:
-    - name: echo branch
-      shell: bash
-      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-      id: extract_branch
+    - name: Echo image name
+      run: echo "Docker image name:" ${{ GITHUB_REF##*/ }}
