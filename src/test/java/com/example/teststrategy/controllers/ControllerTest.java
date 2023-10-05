@@ -5,6 +5,7 @@ import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
 import com.example.teststrategy.request.SetBalanceRequest;
+import com.example.teststrategy.services.Shot;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -225,5 +226,29 @@ class ControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Hello world!"));
+    }
+
+    @Test
+    void shootAndHit() throws Exception {
+        Shot shot = new Shot(10, 11);
+        this.mockMvc.perform(post("/api/shoot")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(
+                        shot
+                )))
+                .andExpect(status().isOk())
+                .andExpect(content().string("hit!"));
+    }
+
+    @Test
+    void shootAndMiss() throws Exception {
+        Shot shot = new Shot(2, 2);
+        this.mockMvc.perform(post("/api/shoot")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(
+                                shot
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(content().string("miss!"));
     }
 }

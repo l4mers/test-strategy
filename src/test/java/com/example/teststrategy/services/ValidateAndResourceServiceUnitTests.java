@@ -72,12 +72,19 @@ class ValidateAndResourceServiceUnitTests {
         assertFalse(validator.validateAge(16));
     }
 
-        @Test
-        void testifAnIntegerBeingPositive() {
+    @Test
+    void testIfAnIntegerBeingPositive() {
         assertTrue(validator.validateIntegerBeingPositive(0));
         assertTrue(validator.validateIntegerBeingPositive(2163));
         assertFalse(validator.validateIntegerBeingPositive(-2));
-        }
+    }
 
-
+    @Test
+    void TestIfHit(){
+        assertTrue(validator.shot(new Shot(10, 11)));
+    }
+    @Test
+    void TestIfMiss(){
+        assertFalse(validator.shot(new Shot(2, 5)));
+    }
 }

@@ -102,4 +102,16 @@ public class ValidateAndResourceService {
     public Integer getBalance(int id) {
         return balanceRepo.findByUserinfoId(id).getBalance();
     }
+
+    public boolean shot(Shot shot){
+        Ship ship = new Ship(10, 10, 2, 5);
+        return shot.getX() >= ship.getX() && shot.getX() < ship.getX() + ship.getWidth()
+                && shot.getY() >= ship.getY() && shot.getY() < ship.getY() + ship.getHeight();
+    }
+    public String hitOrMiss(Shot shot){
+        if(shot(shot)){
+            return "hit!";
+        }
+        return "miss!";
+    }
 }

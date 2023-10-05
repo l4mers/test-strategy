@@ -5,6 +5,7 @@ import com.example.teststrategy.models.UserInfo;
 import com.example.teststrategy.request.LoginRequest;
 import com.example.teststrategy.request.NewUserRequest;
 import com.example.teststrategy.request.SetBalanceRequest;
+import com.example.teststrategy.services.Shot;
 import com.example.teststrategy.services.ValidateAndResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,11 @@ public class Controller {
                     balanceRequest.getBalance()), HttpStatus.OK);
         }
         return new ResponseEntity<>(new Balance(), HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/shoot")
+    public ResponseEntity<String> shoot(@RequestBody Shot shot){
+        return new ResponseEntity<>(validateAndResourceService.hitOrMiss(shot), HttpStatus.OK);
     }
 
     @GetMapping("/hello")
